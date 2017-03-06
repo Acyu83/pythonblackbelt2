@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Success</title>
+  </head>
+  <body>
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{message.tags}}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <h1>Hello, {{names.name}}</h1>
+    <form action="/logout" method="post">
+      {% csrf_token %}
+      <input type="submit" value="Logout">
+    </form>
+    <p>Here is a list of your friends:</p>
+    <table>
+      <tr>
+        <th>Alias</th>
+        <th>Action</th>
+      </tr>
+      {% for frnd in friends  %}
+      <tr>
+        <td>{{frnd.username}}</td>
+        <td><a href="/view/{{frnd.id}}">View Profile</a><a href="/delete_process/{{frnd.id}}">Remove as friend</a></td>
+      </tr>
+      {% endfor %}
+
+    </table>
+    <p>Other User's not on your friend's list:</p>
+    <table>
+        <tr>
+          <th>Alias</th>
+          <th>Action</th>
+        </tr>
+        {% for users in stranger %}
+          {% if users in nonfriends %}
+        <tr>
+          <td><a href="/view/{{users.id}}">{{users.username}}</a></td>
+          <td><a href="/add_process/{{users.id}}">Add as Friend</a></td>
+        </tr>
+          {% endif %}
+        {% endfor %}
+      </table>
+
+
+  </body>
+</html>
